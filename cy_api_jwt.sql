@@ -1,6 +1,6 @@
 -- =====================================================================
 --  cilginyazilim.com – Sıfır Bağımlılık JWT REST API
---    mysql -u root -p < cy_api.sql
+--    mysql -u root -p < cy_api_jwt.sql
 -- =====================================================================
 
 -- ---------------------------------------------------------------------
@@ -23,9 +23,9 @@
 -- ---------------------------------------------------------------------
 SET NAMES utf8mb4;
 
-CREATE DATABASE IF NOT EXISTS `cy_api`
+CREATE DATABASE IF NOT EXISTS `cy_api_jwt`
   DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `cy_api`;
+USE `cy_api_jwt`;
 
 DROP TABLE IF EXISTS `api_notes`;
 DROP TABLE IF EXISTS `api_keys`;

@@ -66,7 +66,7 @@
 
 | Konu | Durum |
 |------|-------|
-| **Anahtarlar** | `cy_api.sql` içindeki **dört anahtar**, dört farklı yetki durumunu temsil eder: tam yetki, salt okunur, yalnızca yazma, pasif. Secret'lar bilerek herkese açıktır — burası bir demo. |
+| **Anahtarlar** | `cy_api_jwt.sql` içindeki **dört anahtar**, dört farklı yetki durumunu temsil eder: tam yetki, salt okunur, yalnızca yazma, pasif. Secret'lar bilerek herkese açıktır — burası bir demo. |
 | **Veriler** | **19 not**, üç anahtara dağılmış. Her anahtar yalnızca **kendi** notlarını görür; başkasının notu listede görünmez, id ile istendiğinde de `404` döner. |
 | **Sıfırlama** | Demo veritabanı **düzenli aralıklarla** başlangıç hâline döner; sildiğiniz notlar geri gelir. |
 | **Jeton ömrü** | **900 saniye (15 dk).** Sayaç şeridinde geri sayar; son 60 saniyede uyarı rengine geçer. |
@@ -74,7 +74,7 @@
 | **`APP_DEBUG`** | Canlıda **otomatik `false`** — sunucu adından türetilir, yerelde `true` kalır. |
 | **Bağımlılık** | **Sıfır.** Composer yok, npm yok, JWT kütüphanesi yok. |
 
-> Demo geçici olarak kapalıysa endişelenmeyin: depoyu klonlayıp `cy_api.sql`'i içe aktarmanız aynı ekranı kendi bilgisayarınızda **2 dakikada** ayağa kaldırır → [Kurulum](#kurulum)
+> Demo geçici olarak kapalıysa endişelenmeyin: depoyu klonlayıp `cy_api_jwt.sql`'i içe aktarmanız aynı ekranı kendi bilgisayarınızda **2 dakikada** ayağa kaldırır → [Kurulum](#kurulum)
 
 ---
 
@@ -116,7 +116,7 @@ Bu proje o üç soruyu ve bir API'nin diğer beş zor sorusunu cevaplıyor — h
 - Paylaşımlı hostingde çalışan ve Composer kullanamayanlar
 - Bootstrap 5 üzerine kurulu, tekrar kullanılabilir bir tasarım kalıbı arayanlar
 
-> **Klonla, `cy_api.sql`'i içe aktar, çalıştır.** Başka hiçbir kurulum adımı yok. Composer yok, npm yok, internet bağlantısı bile gerekmiyor — tüm kütüphaneler proje içinde.
+> **Klonla, `cy_api_jwt.sql`'i içe aktar, çalıştır.** Başka hiçbir kurulum adımı yok. Composer yok, npm yok, internet bağlantısı bile gerekmiyor — tüm kütüphaneler proje içinde.
 
 Bu proje, **[Çılgın Yazılım Kütüphanesi](https://cilginyazilim.com/kutuphane)** altında yayınlanan açıklamalı, üretime hazır örneklerden biridir.
 
@@ -321,7 +321,7 @@ Bir ayrıntı daha: yetkisiz kayıt için **403 değil 404** dönüyoruz. 403, "
 | **Bilgi sızdıran hatalar** | Canlıda SQL metni ekrana basılır | `APP_DEBUG` sunucu adından türetilir; canlıda `false` |
 | **Jeton hırsızlığı (XSS)** | Jeton `localStorage`'a yazılır | Konsolda jeton yalnızca **bellekte** tutulur |
 | **Yapılandırma sızıntısı** | `config.php` doğrudan indirilebilir | `system/` klasörü **tümüyle kapalı** + dosya içi `CY_APP` kontrolü |
-| **Şema/veri sızıntısı** | `/cy_api.sql` → HTTP 200 | `.sql`, `.md`, `.json`, `.log`, `.ini`, `.bak`, `.example` kapalı (`README*.md` bilinçli istisna) |
+| **Şema/veri sızıntısı** | `/cy_api_jwt.sql` → HTTP 200 | `.sql`, `.md`, `.json`, `.log`, `.ini`, `.bak`, `.example` kapalı (`README*.md` bilinçli istisna) |
 | **Clickjacking** | Başlık yok | `X-Frame-Options: SAMEORIGIN` |
 | **MIME sniffing** | Başlık yok | `X-Content-Type-Options: nosniff` |
 
@@ -339,7 +339,7 @@ git clone https://github.com/CilginYazilim/PHP-MySQL-REST-API-JWT-Jeton-Kapsam-H
 cd PHP-MySQL-REST-API-JWT-Jeton-Kapsam-Hiz-Siniri
 
 # 2) Veritabanını oluşturun (dosya CREATE DATABASE'i kendisi yapar)
-mysql -u root -p < cy_api.sql
+mysql -u root -p < cy_api_jwt.sql
 
 # 3) Yerel ayarları oluşturun (isteğe bağlı; varsayılanlar XAMPP'a uyar)
 cp system/config.local.php.example system/config.local.php
@@ -502,7 +502,7 @@ Aynı kalıpla hazırlanmış diğer örnekler: [cilginyazilim.com/kutuphane](ht
 │   └── images/logo.png
 ├── docs/screenshots/
 ├── .htaccess              → dizin listeleme kapalı, dosya türü kuralları, güvenlik başlıkları
-├── cy_api.sql             → şema + 4 anahtar + 19 not (zamanlar NOW() - INTERVAL ile)
+├── cy_api_jwt.sql         → şema + 4 anahtar + 19 not (zamanlar NOW() - INTERVAL ile)
 ├── index.php              → API KONSOLU (API'nin parçası değildir)
 ├── CHANGELOG.md
 ├── LICENSE
@@ -866,7 +866,7 @@ if (in_array($origin, $izinli, true)) {
 - [ ] `JWT_TTL` sizin için doğru mu? (kısa = güvenli, uzun = az istek)
 - [ ] `RATE_LIMIT_*` değerleri trafiğinize göre ayarlandı
 - [ ] HTTPS zorunlu — jeton düz metin bir başlıkta taşınır
-- [ ] `/cy_api.sql`, `/system/config.php`, `/CHANGELOG.md` adresleri **403** dönüyor
+- [ ] `/cy_api_jwt.sql`, `/system/config.php`, `/CHANGELOG.md` adresleri **403** dönüyor
 - [ ] `index.php` ve `assets/js/console.js` üretimde gerekli mi? Gerekmiyorsa silin
 
 ---
@@ -878,9 +878,9 @@ if (in_array($origin, $izinli, true)) {
 | Her istek `401`, jeton doğru | `Authorization` başlığı PHP'ye ulaşmıyor | `AllowOverride All`; `api/.htaccess` okunuyor mu? |
 | `/api/notes` → 404, `/api/index.php?path=/notes` çalışıyor | `mod_rewrite` kapalı | Modülü açın ya da `?path=` biçimini kullanın |
 | `403` alıyorum ama jetonum yeni | Kapsam eksik | `details.required` alanına bakın; **yeni jeton almak çözmez** |
-| Türkçe karakterler bozuk | `.sql` dosyası yanlış karakter setiyle içe aktarıldı | `mysql --default-character-set=utf8mb4 < cy_api.sql` |
+| Türkçe karakterler bozuk | `.sql` dosyası yanlış karakter setiyle içe aktarıldı | `mysql --default-character-set=utf8mb4 < cy_api_jwt.sql` |
 | `SQLSTATE[HY093]` | Aynı adlı yer tutucu iki kez kullanılmış | `EMULATE_PREPARES = false` iken ad tekrar edemez; `:q1`, `:q2` gibi ayırın |
-| `429` sürekli geliyor | Hız sınırı sayaç dosyaları | `sys_get_temp_dir()/cy_api_rate` klasörünü silin |
+| `429` sürekli geliyor | Hız sınırı sayaç dosyaları | `sys_get_temp_dir()/cy_api_jwt_rate` klasörünü silin |
 | Konsolda "Demo jetonu üretilemedi" | `DEMO_TOKENS = false` | Beklenen davranış; üretimde kapalıdır |
 | `db_unavailable` | Veritabanı künyesi yanlış | `system/config.local.php` içindeki `DB_*` değerlerini kontrol edin |
 

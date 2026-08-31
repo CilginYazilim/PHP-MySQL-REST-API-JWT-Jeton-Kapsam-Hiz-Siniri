@@ -5,6 +5,29 @@ sürüm numaralandırması [Semantic Versioning](https://semver.org/lang/tr/) ku
 
 ---
 
+## [2.0.0] — 2026-08-31
+
+Veritabanı ve kurulum dosyası adı belirginleştirildi. Kod davranışı, uç noktalar ve şema aynıdır. **Kırıcı değişiklik:** `DB_NAME` varsayılanı değişti; 1.0.0 kurulumunu varsayılanlarla çalıştıranların ya veritabanını yeniden adlandırması ya da `config.local.php` içinde `DB_NAME` tanımlaması gerekir.
+
+### Değişti
+
+- Veritabanı adı: `cy_api` → **`cy_api_jwt`**. Kurulum dosyası: `cy_api.sql` → **`cy_api_jwt.sql`**.
+- `config.php` içindeki `DB_NAME` varsayılanı ve `config.local.php.example` yeni ada güncellendi.
+- Hız sınırı sayaçlarının geçici klasörü `cy_api_rate` → **`cy_api_jwt_rate`**. (Yükseltmede eski klasördeki sayaçlar okunmaz; sınırlar bir kez sıfırlanmış olur.)
+- `.htaccess`, `index.php` ve her iki README'deki dosya adı atıfları güncellendi.
+
+### Yükseltme
+
+```sql
+-- Mevcut 1.0.0 kurulumunu koruyacaksanız:
+CREATE DATABASE `cy_api_jwt` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+RENAME TABLE `cy_api`.`api_keys`  TO `cy_api_jwt`.`api_keys`,
+             `cy_api`.`api_notes` TO `cy_api_jwt`.`api_notes`;
+DROP DATABASE `cy_api`;
+```
+
+---
+
 ## [1.0.0] — 2026-08-31
 
 İlk genel sürüm. JWT çekirdeği, uç noktalar, konsol ve belgelendirme üretime hazır durumda.

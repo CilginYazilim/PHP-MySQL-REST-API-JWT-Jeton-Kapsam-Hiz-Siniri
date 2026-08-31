@@ -38,7 +38,7 @@ require __DIR__ . '/system/function.php';
 $base = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '')), '/');
 
 /*  Demo anahtarları. Secret'lar burada AÇIK duruyor ve olması gereken
- *  bu: bunlar herkese açık bir demonun anahtarlarıdır, cy_api.sql
+ *  bu: bunlar herkese açık bir demonun anahtarlarıdır, cy_api_jwt.sql
  *  içinde de aynen yazılıdır. Kendi kurulumunuzda yenilerini üretin. */
 $demoKeys = [
     ['id' => 'demo_full',     'secret' => 'demo-secret-123',     'ad' => 'Tam yetki',    'not' => 'okur + yazar + künye'],

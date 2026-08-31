@@ -252,7 +252,7 @@ function jwt_error_message(string $err): string
 
 function rate_limit_dir(): string
 {
-    $dir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'cy_api_rate';
+    $dir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'cy_api_jwt_rate';
     if (!is_dir($dir)) {
         @mkdir($dir, 0700, true);
     }

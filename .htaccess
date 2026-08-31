@@ -17,7 +17,7 @@ Options -Indexes
 # ---------------------------------------------------------------------
 #  2) ÇALIŞTIRILMAYAN DOSYALAR İNDİRİLEMESİN
 # ---------------------------------------------------------------------
-#  ÖLÇÜLEN SORUN: /cy_api.sql adresi HTTP 200 ile veritabanı kurulum
+#  ÖLÇÜLEN SORUN: /cy_api_jwt.sql adresi HTTP 200 ile veritabanı kurulum
 #  dosyasının tamamını indiriyordu — tablo yapısı ve API anahtarı kimlikleri ve secret hash'leri dahil.
 #  Bu depoda veri zaten örnek/uydurmadır ama desen tehlikelidir: aynı
 #  düzenle canlıya alınan bir projede o dosya gerçek müşteri verisi

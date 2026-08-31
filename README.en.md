@@ -66,7 +66,7 @@
 
 | Topic | Status |
 |-------|--------|
-| **Keys** | The **four keys** in `cy_api.sql` represent four permission states: full access, read-only, write-only, disabled. The secrets are public on purpose — this is a demo. |
+| **Keys** | The **four keys** in `cy_api_jwt.sql` represent four permission states: full access, read-only, write-only, disabled. The secrets are public on purpose — this is a demo. |
 | **Data** | **19 notes** spread across three keys. Each key sees **only its own** notes; someone else's note never appears in the list and returns `404` when requested by id. |
 | **Reset** | The demo database returns to its initial state **periodically**; notes you delete come back. |
 | **Token lifetime** | **900 seconds (15 min).** It counts down in the stats strip and turns amber in the final 60 seconds. |
@@ -74,7 +74,7 @@
 | **`APP_DEBUG`** | Automatically **`false`** in production — derived from the host name, stays `true` locally. |
 | **Dependencies** | **Zero.** No Composer, no npm, no JWT library. |
 
-> If the demo is temporarily down, don't worry: cloning the repo and importing `cy_api.sql` gets the same screen running on your machine in **2 minutes** → [Installation](#installation)
+> If the demo is temporarily down, don't worry: cloning the repo and importing `cy_api_jwt.sql` gets the same screen running on your machine in **2 minutes** → [Installation](#installation)
 
 ---
 
@@ -116,7 +116,7 @@ This project answers those three questions and five more that every API has to f
 - Anyone on shared hosting who can't run Composer
 - Anyone looking for a reusable Bootstrap 5 design pattern
 
-> **Clone, import `cy_api.sql`, run.** There is no other setup step. No Composer, no npm, not even an internet connection — every library ships inside the project.
+> **Clone, import `cy_api_jwt.sql`, run.** There is no other setup step. No Composer, no npm, not even an internet connection — every library ships inside the project.
 
 This project is one of the annotated, production-ready examples published under the **[Çılgın Yazılım Library](https://cilginyazilim.com/kutuphane)**.
 
@@ -321,7 +321,7 @@ One more detail: unauthorized records get **404, not 403**. A 403 would confirm 
 | **Information-leaking errors** | SQL text printed in production | `APP_DEBUG` derived from the host name; `false` in production |
 | **Token theft via XSS** | Token written to `localStorage` | The console keeps the token in **memory** only |
 | **Configuration leak** | `config.php` downloadable | `system/` **fully denied** plus an in-file `CY_APP` guard |
-| **Schema/data leak** | `/cy_api.sql` → HTTP 200 | `.sql`, `.md`, `.json`, `.log`, `.ini`, `.bak`, `.example` denied (`README*.md` a deliberate exception) |
+| **Schema/data leak** | `/cy_api_jwt.sql` → HTTP 200 | `.sql`, `.md`, `.json`, `.log`, `.ini`, `.bak`, `.example` denied (`README*.md` a deliberate exception) |
 | **Clickjacking** | No header | `X-Frame-Options: SAMEORIGIN` |
 | **MIME sniffing** | No header | `X-Content-Type-Options: nosniff` |
 
@@ -339,7 +339,7 @@ git clone https://github.com/CilginYazilim/PHP-MySQL-REST-API-JWT-Jeton-Kapsam-H
 cd PHP-MySQL-REST-API-JWT-Jeton-Kapsam-Hiz-Siniri
 
 # 2) Create the database (the file runs CREATE DATABASE itself)
-mysql -u root -p < cy_api.sql
+mysql -u root -p < cy_api_jwt.sql
 
 # 3) Create local settings (optional; defaults suit XAMPP)
 cp system/config.local.php.example system/config.local.php
@@ -502,7 +502,7 @@ Other examples built on the same pattern: [cilginyazilim.com/kutuphane](https://
 │   └── images/logo.png
 ├── docs/screenshots/
 ├── .htaccess              → no directory listing, file-type rules, security headers
-├── cy_api.sql             → schema + 4 keys + 19 notes (timestamps via NOW() - INTERVAL)
+├── cy_api_jwt.sql         → schema + 4 keys + 19 notes (timestamps via NOW() - INTERVAL)
 ├── index.php              → API CONSOLE (not part of the API)
 ├── CHANGELOG.md
 ├── LICENSE
@@ -866,7 +866,7 @@ If you enable `Allow-Credentials`, using `*` is forbidden anyway.
 - [ ] Is `JWT_TTL` right for you? (short = safer, long = fewer requests)
 - [ ] `RATE_LIMIT_*` tuned to your traffic
 - [ ] HTTPS enforced — the token travels in a plaintext header
-- [ ] `/cy_api.sql`, `/system/config.php` and `/CHANGELOG.md` all return **403**
+- [ ] `/cy_api_jwt.sql`, `/system/config.php` and `/CHANGELOG.md` all return **403**
 - [ ] Do you need `index.php` and `assets/js/console.js` in production? If not, delete them
 
 ---
@@ -878,9 +878,9 @@ If you enable `Allow-Credentials`, using `*` is forbidden anyway.
 | Every request returns `401`, token is fine | The `Authorization` header never reaches PHP | `AllowOverride All`; is `api/.htaccess` being read? |
 | `/api/notes` → 404 but `/api/index.php?path=/notes` works | `mod_rewrite` disabled | Enable the module or use the `?path=` form |
 | I get `403` but my token is brand new | Missing scope | Read `details.required`; **a new token will not help** |
-| Turkish characters are mangled | The `.sql` file was imported with the wrong charset | `mysql --default-character-set=utf8mb4 < cy_api.sql` |
+| Turkish characters are mangled | The `.sql` file was imported with the wrong charset | `mysql --default-character-set=utf8mb4 < cy_api_jwt.sql` |
 | `SQLSTATE[HY093]` | The same named placeholder used twice | With `EMULATE_PREPARES = false` names cannot repeat; use `:q1`, `:q2` |
-| Constant `429` | Stale rate-limit counter files | Delete the `sys_get_temp_dir()/cy_api_rate` directory |
+| Constant `429` | Stale rate-limit counter files | Delete the `sys_get_temp_dir()/cy_api_jwt_rate` directory |
 | Console says the demo token could not be minted | `DEMO_TOKENS = false` | Expected behaviour; it is off in production |
 | `db_unavailable` | Wrong database credentials | Check the `DB_*` values in `system/config.local.php` |
 

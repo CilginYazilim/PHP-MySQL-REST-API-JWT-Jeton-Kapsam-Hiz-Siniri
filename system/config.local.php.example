@@ -21,7 +21,7 @@
  * (deploy) işlemi onu SİLMEZ — bir kez oluşturursunuz, kalıcıdır.
  *
  * cPanel'de veritabanı ve kullanıcı adı genellikle hesap adınızla
- * öneklidir ("hesap_cy_api"). MySQL kullanıcı adlarında 16 karakter
+ * öneklidir ("hesap_cy_api_jwt"). MySQL kullanıcı adlarında 16 karakter
  * sınırı vardır; cPanel uzun adları kısaltır, bu yüzden kullanıcı adı
  * veritabanı adıyla AYNI OLMAYABİLİR — cPanel'de göründüğü gibi yazın.
  *
@@ -30,7 +30,7 @@
  */
 
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'cy_api');
+define('DB_NAME', 'cy_api_jwt');
 define('DB_USER', 'veritabani_kullanicisi');
 define('DB_PASS', 'veritabani_parolasi');
 
