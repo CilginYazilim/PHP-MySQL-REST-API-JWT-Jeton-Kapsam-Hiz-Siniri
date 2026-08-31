@@ -47,7 +47,7 @@
 ### Demoda 60 saniyede neleri deneyebilirsiniz?
 
 | # | Şunu deneyin | Perde arkasında ne oluyor? |
-|:-:|--------------|----------------------------|
+|---|--------------|----------------------------|
 | **1** | Sağ üstteki **🔑 Jeton al** düğmesine basın | `POST /auth/token` çağrılır. `secret` veritabanındaki **hash** ile `password_verify()` üzerinden kıyaslanır; ham secret hiçbir yerde durmaz. Yanıt kısa ömürlü bir JWT'dir |
 | **2** | **2 · Jeton** bölümündeki üç renkli parçaya bakın | Bir JWT `header.payload.signature`'dır. Payload **tarayıcıda** çözülür — sunucuya hiç sorulmadan. Çünkü şifreli değildir, yalnızca base64url ile **kodlanmıştır** |
 | **3** | Payload'daki `exp` ve `scopes` alanlarını okuyun | `exp` jetonun son kullanma anı, `scopes` ise **yetki**. Kimlik ile yetkinin ayrı şeyler olduğunu tek ekranda gösteren yer burası |

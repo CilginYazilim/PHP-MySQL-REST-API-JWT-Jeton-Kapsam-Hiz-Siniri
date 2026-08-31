@@ -47,7 +47,7 @@
 ### What can you try in 60 seconds?
 
 | # | Try this | What happens behind the scenes |
-|:-:|----------|-------------------------------|
+|---|----------|-------------------------------|
 | **1** | Press **🔑 Jeton al** (Get token) at the top right | `POST /auth/token` runs. The `secret` is compared against a stored **hash** via `password_verify()`; the raw secret is never stored anywhere. The response is a short-lived JWT |
 | **2** | Look at the three coloured segments under **2 · Jeton** | A JWT is `header.payload.signature`. The payload is decoded **in the browser** — the server is never asked. Because it isn't encrypted, only base64url **encoded** |
 | **3** | Read the `exp` and `scopes` claims in the payload | `exp` is when the token dies, `scopes` is **authority**. This is where identity and permission visibly part ways |
