@@ -1,0 +1,24 @@
+# =====================================================================
+#  system/ KLASÖRÜ – TÜMÜYLE DIŞARIYA KAPALI
+#  cilginyazilim.com – Sıfır Bağımlılık JWT REST API
+# ---------------------------------------------------------------------
+#  Diğer örneklerde bu klasörde bir "ajax.php" bulunur ve beyaz listeye
+#  alınır. BU PROJEDE ÖYLE BİR DOSYA YOKTUR: dışarı açık tek giriş
+#  noktası api/index.php'dir. Dolayısıyla burada beyaz listeye alınacak
+#  hiçbir şey yok — klasörün tamamı reddedilir.
+#
+#  NEDEN ÖNEMLİ? config.php içinde JWT_SECRET durur. O sır sızarsa,
+#  saldırgan istediği kapsamla (scope) istediği anahtar adına GEÇERLİ
+#  jeton üretebilir ve imza doğrulaması onu ayırt EDEMEZ. Yani bu
+#  dosyanın servis edilmesi, tüm API'nin ele geçirilmesiyle eşdeğerdir.
+#
+#  Bir yapılandırma hatası (PHP'nin bir an yorumlanmaması, yanlış bir
+#  uzantı eşlemesi) config.php'nin KAYNAK KODUNU düz metin olarak
+#  sunabilir. Bu kural o senaryoyu kapatır.
+#
+#  İkinci katman: dosyaların kendi içindeki CY_APP kontrolü. .htaccess'in
+#  okunmadığı bir sunucuda (nginx) bu dosya hiçbir şey yapmaz; oradaki
+#  PHP kontrolü çalışır. İki katman da bilerek vardır.
+# =====================================================================
+
+Require all denied

@@ -1,0 +1,40 @@
+# =====================================================================
+#  /api/ – TÜM İSTEKLERİ index.php'YE YÖNLENDİR (temiz URL)
+#  cilginyazilim.com – Sıfır Bağımlılık JWT REST API
+# ---------------------------------------------------------------------
+#  RewriteBase BİLEREK YAZILMADI.
+#
+#  Eskiden burada "RewriteBase /rest-api-jwt/api/" satırı vardı. O satır
+#  projeyi başka bir klasöre kopyaladığınız anda sessizce bozulur:
+#  yönlendirme var olmayan bir yola gider, her uç 404 döner ve
+#  .htaccess'e bakmayı akıl edene kadar sebebi görünmez.
+#
+#  Satır olmadığında Apache tabanı, bu .htaccess'in bulunduğu dizinden
+#  kendisi türetir. Proje hangi alt klasörde durursa dursun çalışır.
+# =====================================================================
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Var olan bir DOSYA istendiyse dokunma (index.php'nin kendisi).
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+
+# ---------------------------------------------------------------------
+#  Authorization başlığını PHP'ye taşı
+# ---------------------------------------------------------------------
+#  Bazı Apache/CGI kurulumlarında (mod_php dışındaki SAPI'ler) bu başlık
+#  PHP'ye HİÇ ulaşmaz. Belirtisi şudur: doğru jetonla yapılan her istek
+#  401 döner ve sebebi kodda görünmez, çünkü kod başlığı gerçekten
+#  boş görür. Bu iki satır başlığı bir ortam değişkenine kopyalar;
+#  PHP tarafında bearer_token() üç ayrı kaynağı birden dener.
+# ---------------------------------------------------------------------
+<IfModule mod_setenvif.c>
+    SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+</IfModule>

@@ -1,0 +1,35 @@
+# =====================================================================
+#  .gitignore – Git'in TAKİP ETMEYECEĞİ dosyalar
+#  cilginyazilim.com – Sıfır Bağımlılık JWT REST API
+# ---------------------------------------------------------------------
+#  NOT: Bu bir ÖRNEK PROJEDİR. jQuery/Bootstrap dosyaları ve örnek
+#  veri bilerek repoya DAHİL EDİLMİŞTİR; projeyi indiren herkes hiçbir
+#  ek işlem yapmadan çalışan bir demo görsün diye.
+#
+#  DİKKAT: system/config.php içinde JWT_SECRET durur. Depodaki değer
+#  yalnızca GELİŞTİRME içindir; üretim sırrınızı ASLA commit etmeyin,
+#  ortam değişkeniyle verin.
+#
+# =====================================================================
+
+# --- Yerel ortam ayarları (şifre içerebilir, ASLA paylaşmayın) -------
+.env
+system/config.local.php
+
+# --- Editör ve işletim sistemi artıkları ----------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# --- Log ve geçici dosyalar -----------------------------------------
+*.log
+*.tmp
+*.bak
+
+# --- Bağımlılık klasörleri (bu projede kullanılmıyor) ---------------
+/vendor/
+/node_modules/

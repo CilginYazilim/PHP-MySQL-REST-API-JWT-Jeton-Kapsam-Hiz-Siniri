@@ -1,0 +1,65 @@
+<?php
+/**
+ * ############################################################
+ * #  BU DOSYA BİR ŞABLONDUR — İÇİNİ DOLDURMAYIN!             #
+ * ############################################################
+ *
+ * Bu dosyanın adı ".example" ile bittiği için uygulama onu HİÇ OKUMAZ.
+ * Buraya yazacağınız parola ya da imza anahtarı hiçbir işe yaramaz;
+ * dahası bu dosya depoda takiplidir, yani yazdığınız sır GitHub'a gider.
+ *
+ * DOĞRU KULLANIM — iki adım:
+ *
+ *   1) Bu dosyayı aynı klasöre KOPYALAYIN ve kopyanın adını
+ *      ".example" olmadan "config.local.php" yapın:
+ *
+ *          config.local.php.example   ->   config.local.php
+ *
+ *   2) Aşağıdaki satırları KOPYADA doldurun. Bu dosyaya dokunmayın.
+ *
+ * config.local.php .gitignore içindedir: depoya gitmez ve canlıya alma
+ * (deploy) işlemi onu SİLMEZ — bir kez oluşturursunuz, kalıcıdır.
+ *
+ * cPanel'de veritabanı ve kullanıcı adı genellikle hesap adınızla
+ * öneklidir ("hesap_cy_api"). MySQL kullanıcı adlarında 16 karakter
+ * sınırı vardır; cPanel uzun adları kısaltır, bu yüzden kullanıcı adı
+ * veritabanı adıyla AYNI OLMAYABİLİR — cPanel'de göründüğü gibi yazın.
+ *
+ * Not: APP_DEBUG'ı burada tanımlamanıza gerek yok. config.php onu sunucu
+ * adından türetir; canlı bir alan adında kendiliğinden kapalıdır.
+ */
+
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'cy_api');
+define('DB_USER', 'veritabani_kullanicisi');
+define('DB_PASS', 'veritabani_parolasi');
+
+/**
+ * ---------------------------------------------------------------------
+ *  JWT_SECRET — BU PROJEDE VERİTABANI PAROLASI KADAR ÖNEMLİ
+ * ---------------------------------------------------------------------
+ *  Bu anahtarı bilen biri, İSTEDİĞİ kapsamla, İSTEDİĞİ anahtar adına
+ *  geçerli bir jeton üretebilir. İmza doğrulaması onu gerçeğinden
+ *  ayırt edemez, çünkü imza gerçekten doğrudur.
+ *
+ *  Depodaki varsayılan değer bir sır DEĞİLDİR — herkes okuyabilir.
+ *  Canlıya almadan önce mutlaka kendi anahtarınızı üretin:
+ *
+ *      php -r "echo bin2hex(random_bytes(32));"
+ *
+ *  Anahtarı değiştirmek, o an dolaşımdaki TÜM jetonları geçersiz kılar.
+ *  Bu bir yan etki değil, tek toplu iptal yönteminizdir.
+ * ---------------------------------------------------------------------
+ */
+define('JWT_SECRET', 'buraya-32-bayt-rastgele-hex-yazin');
+
+/**
+ * ---------------------------------------------------------------------
+ *  DEMO_TOKENS — üretimde false
+ * ---------------------------------------------------------------------
+ *  true iken /auth/demo-token açıktır ve BİLEREK BOZUK jetonlar üretir
+ *  (süresi dolmuş, ileri tarihli, yanlış aud, kapsamsız). Yalnızca bir
+ *  öğrenme aracıdır; gerçek bir kurulumda kapatın.
+ * ---------------------------------------------------------------------
+ */
+define('DEMO_TOKENS', false);
