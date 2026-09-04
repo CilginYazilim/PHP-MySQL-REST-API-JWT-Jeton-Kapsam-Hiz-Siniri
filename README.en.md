@@ -16,7 +16,7 @@
 
 [🇹🇷 Türkçe](README.md) · **🇬🇧 English**
 
-[**▶ Live Demo**](https://cilginyazilim.com/kutuphane/uygulama/PHP-MySQL-REST-API-JWT-Jeton-Kapsam-Hiz-Siniri-main/) · [Source Library](https://cilginyazilim.com/kutuphane/php-rest-api-jwt) · [cilginyazilim.com](https://cilginyazilim.com)
+[**▶ Live Demo**](https://cilginyazilim.com/kutuphane/uygulama/rest-api-jwt/) · [Source Library](https://cilginyazilim.com/kutuphane/php-rest-api-jwt) · [cilginyazilim.com](https://cilginyazilim.com)
 
 </div>
 
@@ -28,13 +28,13 @@
 
 **No setup, no signup, no download — try it in your browser in 3 seconds.**
 
-<a href="https://cilginyazilim.com/kutuphane/uygulama/PHP-MySQL-REST-API-JWT-Jeton-Kapsam-Hiz-Siniri-main/"><img src="https://img.shields.io/badge/OPEN_LIVE_DEMO-0b5cb5?style=for-the-badge&logo=googlechrome&logoColor=white&labelColor=061321" alt="Open Live Demo" height="42"></a>
+<a href="https://cilginyazilim.com/kutuphane/uygulama/rest-api-jwt/"><img src="https://img.shields.io/badge/OPEN_LIVE_DEMO-0b5cb5?style=for-the-badge&logo=googlechrome&logoColor=white&labelColor=061321" alt="Open Live Demo" height="42"></a>
 <a href="https://cilginyazilim.com/kutuphane/php-rest-api-jwt"><img src="https://img.shields.io/badge/BROWSE_SOURCE-0ea5e9?style=for-the-badge&logo=readthedocs&logoColor=white&labelColor=061321" alt="Browse Source" height="42"></a>
-<a href="https://github.com/CilginYazilim/PHP-MySQL-REST-API-JWT-Jeton-Kapsam-Hiz-Siniri/archive/refs/heads/main.zip"><img src="https://img.shields.io/badge/DOWNLOAD_ZIP-16a34a?style=for-the-badge&logo=github&logoColor=white&labelColor=061321" alt="Download ZIP" height="42"></a>
+<a href="https://github.com/CilginYazilim/rest-api-jwt/archive/refs/heads/main.zip"><img src="https://img.shields.io/badge/DOWNLOAD_ZIP-16a34a?style=for-the-badge&logo=github&logoColor=white&labelColor=061321" alt="Download ZIP" height="42"></a>
 
 <br><br>
 
-<a href="https://cilginyazilim.com/kutuphane/uygulama/PHP-MySQL-REST-API-JWT-Jeton-Kapsam-Hiz-Siniri-main/" title="Click to open the live demo">
+<a href="https://cilginyazilim.com/kutuphane/uygulama/rest-api-jwt/" title="Click to open the live demo">
   <img src="docs/screenshots/01-api-konsolu.png" alt="JWT REST API console live demo preview" width="860">
 </a>
 
@@ -335,8 +335,8 @@ One more detail: unauthorized records get **404, not 403**. A 403 would confirm 
 
 ```bash
 # 1) Get the repository
-git clone https://github.com/CilginYazilim/PHP-MySQL-REST-API-JWT-Jeton-Kapsam-Hiz-Siniri.git
-cd PHP-MySQL-REST-API-JWT-Jeton-Kapsam-Hiz-Siniri
+git clone https://github.com/CilginYazilim/rest-api-jwt.git
+cd rest-api-jwt
 
 # 2) Create the database (the file runs CREATE DATABASE itself)
 mysql -u root -p < cy_api_jwt.sql
@@ -346,7 +346,7 @@ cp system/config.local.php.example system/config.local.php
 #    → fill in the DB_* and JWT_SECRET lines
 
 # 4) Open it in a browser
-#    http://localhost/PHP-MySQL-REST-API-JWT-Jeton-Kapsam-Hiz-Siniri/
+#    http://localhost/rest-api-jwt/
 ```
 
 **No Composer, no npm.** jQuery and Bootstrap ship in the repo; it works offline.
@@ -354,7 +354,7 @@ cp system/config.local.php.example system/config.local.php
 ### A 30-second curl try-out
 
 ```bash
-BASE=http://localhost/PHP-MySQL-REST-API-JWT-Jeton-Kapsam-Hiz-Siniri/api
+BASE=http://localhost/rest-api-jwt/api
 
 # Get a token
 TOKEN=$(curl -s -X POST "$BASE/auth/token" \
@@ -384,6 +384,45 @@ Clean URLs (`/api/notes`) rely on the rewrite in `api/.htaccess`. If rewriting i
 ```
 
 All three forms land in the same router; `resolve_path()` tries all of them.
+
+### Environment variables
+
+Put them in a **`.env`** file at the repository root and never touch
+`system/config.php`:
+
+```bash
+cp .env.example .env        # Windows: copy .env.example .env
+```
+
+`.env` is in `.gitignore`: it never reaches the repository and a deploy
+does **not** delete it. `system/config.php`, by contrast, lives in the
+repository and is replaced by the repository's copy on every deploy — a
+password written there both ships to GitHub and disappears on the first
+deploy.
+
+The app runs without the file too; the defaults below match a local XAMPP
+install.
+
+**Lookup order:** `.env` → the real environment variable (Apache `SetEnv`,
+systemd…) → the default shown here.
+
+| Variable | Default | What it does |
+|---|---|---|
+| `DB_HOST` | `127.0.0.1` | Database server |
+| `DB_NAME` | `cy_api_jwt` | Database name |
+| `DB_USER` | `root` | User |
+| `DB_PASS` | *(empty)* | Password — **never hard-code it** |
+| `APP_TIMEZONE` | `Europe/Istanbul` | PHP timezone |
+| `APP_DEBUG` | *from environment* | Whether errors are printed to the page |
+
+**Why `APP_TIMEZONE`?** The `date.timezone` in XAMPP's `php.ini` can
+differ from the system timezone MySQL uses. On the test machine PHP was
+`Europe/Berlin` while MySQL was `Europe/Istanbul`, so two lines describing
+the same instant were an hour apart. The time **arithmetic** is done in
+SQL and was always correct — what drifted was the clock PHP printed. The
+timezone is now pinned explicitly; if your server is in another region,
+set this variable instead of touching the code.
+
 
 ---
 
@@ -907,7 +946,7 @@ Contributions are welcome.
 4. Push the branch: `git push origin feature/great-thing`
 5. Open a pull request
 
-For bug reports and suggestions, use the [Issues](https://github.com/CilginYazilim/PHP-MySQL-REST-API-JWT-Jeton-Kapsam-Hiz-Siniri/issues) section.
+For bug reports and suggestions, use the [Issues](https://github.com/CilginYazilim/rest-api-jwt/issues) section.
 
 ---
 

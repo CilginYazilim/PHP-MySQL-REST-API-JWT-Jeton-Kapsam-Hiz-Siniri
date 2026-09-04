@@ -5,6 +5,64 @@ sürüm numaralandırması [Semantic Versioning](https://semver.org/lang/tr/) ku
 
 ---
 
+## [2.1.0] — 2026-09-04
+
+### Eklendi
+
+- **Veritabanı bilgileri artık `.env` dosyasından okunabiliyor.**
+  Daha önce tek yol `system/config.php` dosyasını elle düzenlemekti — ve
+  o dosya depoda durur: yazdığınız parola hem GitHub'a gider hem de ilk
+  dağıtımda depodaki sürümle değiştirilerek kaybolur.
+
+  Depo köküne `.env.example` eklendi; kopyalayıp `.env` yapmanız yeterli.
+  `.env` zaten `.gitignore` içindeydi.
+
+  Değer arama sırası: `.env` → sunucunun gerçek ortam değişkeni → bu
+  dosyadaki varsayılan. (`config.local.php` destekleyen depolarda o hâlâ
+  en önde gelir; eski kurulumlar olduğu gibi çalışır.)
+
+  Uygulama kodu değişmedi: `cy_env()` yardımcısı bilerek `getenv()` ile
+  aynı sözleşmeyi taşır (değer ya da `false`), böylece mevcut `?:` ve
+  `!== false` kalıplarının hiçbirine dokunulmadı.
+
+### Değiştirildi
+
+- **Depo adı `PHP-MySQL-REST-API-JWT-Jeton-Kapsam-Hiz-Siniri`
+  yerine `rest-api-jwt` oldu.** Uzun ad adres satırında okunmuyordu ve
+  klasör adıyla eşleşmediği için vitrindeki bağlantılar kırılıyordu.
+  Klon, ZIP, issue ve yerel kurulum adresleri buna göre güncellendi.
+  GitHub eski adresi yenisine yönlendirir; eski bağlantılar kırılmaz.
+
+- **Zaman dilimi artık açıkça sabitleniyor.** `system/config.php` içinde
+  `APP_TIMEZONE` (varsayılan `Europe/Istanbul`) tanımlanıp
+  `date_default_timezone_set()` çağrılıyor; ortam değişkeniyle
+  değiştirilebilir.
+
+  **Ölçülen sorun:** XAMPP'ın `php.ini` dosyasındaki `date.timezone`,
+  MySQL'in kullandığı sistem diliminden farklı olabiliyor. Test
+  makinesinde PHP `Europe/Berlin`, MySQL ise `Europe/Istanbul`
+  kullanıyordu ve aynı anı anlatan iki satır bir saat farklı görünüyordu:
+
+  ```
+  worker günlüğü (PHP date)  : 14:03:17
+  veritabanı  (MySQL NOW())  : 15:03:17
+  ```
+
+  Zaman **aritmetiği** bu depoda bilinçli olarak SQL tarafında yapıldığı
+  için (`NOW()`, `INTERVAL`, `TIMESTAMPDIFF`) hesaplar zaten doğruydu;
+  kayan şey PHP'nin ekrana ve günlüğe bastığı saatti. Ama demoyu deneyen
+  biri için bu, "sistem yanlış çalışıyor" gibi görünüyordu.
+
+### Düzeltildi
+
+- **"Canlı Demo" bağlantısı kırıktı.** README'lerdeki en görünür düğme
+  `…/kutuphane/uygulama/PHP-MySQL-REST-API-JWT-Jeton-Kapsam-Hiz-Siniri-main/` adresine gidiyordu; o adres **404**
+  döndürüyordu. Vitrindeki gerçek adres `…/kutuphane/uygulama/rest-api-jwt/`.
+  Her iki dildeki README'de tüm geçtiği yerler düzeltildi ve adreslerin
+  200 döndüğü doğrulandı.
+
+---
+
 ## [2.0.0] — 2026-08-31
 
 Veritabanı ve kurulum dosyası adı belirginleştirildi. Kod davranışı, uç noktalar ve şema aynıdır. **Kırıcı değişiklik:** `DB_NAME` varsayılanı değişti; 1.0.0 kurulumunu varsayılanlarla çalıştıranların ya veritabanını yeniden adlandırması ya da `config.local.php` içinde `DB_NAME` tanımlaması gerekir.
@@ -131,4 +189,4 @@ DROP DATABASE `cy_api`;
 - `system/` klasörü **tümüyle kapalıdır**: içinde `JWT_SECRET` durur ve o sır sızarsa saldırgan istediği kapsamla istediği anahtar adına **geçerli** jeton üretebilir; imza doğrulaması onu ayırt edemez. İkinci katman dosyaların içindeki `CY_APP` kontrolüdür — `.htaccess`'in okunmadığı bir sunucuda (nginx) o çalışır.
 - `.htaccess`: dizin listeleme kapalı; `.sql`, `.md`, `.json`, `.log`, `.ini`, `.bak`, `.example` kapalı — `README*.md` bilinçli istisnadır. `DirectoryIndex index.php` eklendi.
 
-[1.0.0]: https://github.com/CilginYazilim/PHP-MySQL-REST-API-JWT-Jeton-Kapsam-Hiz-Siniri/releases/tag/v1.0.0
+[1.0.0]: https://github.com/CilginYazilim/rest-api-jwt/releases/tag/v1.0.0

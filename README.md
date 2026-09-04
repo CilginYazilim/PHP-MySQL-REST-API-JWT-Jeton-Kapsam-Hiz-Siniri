@@ -16,7 +16,7 @@
 
 **🇹🇷 Türkçe** · [🇬🇧 English](README.en.md)
 
-[**▶ Canlı Demo**](https://cilginyazilim.com/kutuphane/uygulama/PHP-MySQL-REST-API-JWT-Jeton-Kapsam-Hiz-Siniri-main/) · [Kaynak Kütüphanesi](https://cilginyazilim.com/kutuphane/php-rest-api-jwt) · [cilginyazilim.com](https://cilginyazilim.com)
+[**▶ Canlı Demo**](https://cilginyazilim.com/kutuphane/uygulama/rest-api-jwt/) · [Kaynak Kütüphanesi](https://cilginyazilim.com/kutuphane/php-rest-api-jwt) · [cilginyazilim.com](https://cilginyazilim.com)
 
 </div>
 
@@ -28,13 +28,13 @@
 
 **Kurulum yok, kayıt yok, indirme yok — tarayıcınızdan 3 saniyede deneyin.**
 
-<a href="https://cilginyazilim.com/kutuphane/uygulama/PHP-MySQL-REST-API-JWT-Jeton-Kapsam-Hiz-Siniri-main/"><img src="https://img.shields.io/badge/CANLI_DEMOYU_A%C3%87-0b5cb5?style=for-the-badge&logo=googlechrome&logoColor=white&labelColor=061321" alt="Canlı Demoyu Aç" height="42"></a>
+<a href="https://cilginyazilim.com/kutuphane/uygulama/rest-api-jwt/"><img src="https://img.shields.io/badge/CANLI_DEMOYU_A%C3%87-0b5cb5?style=for-the-badge&logo=googlechrome&logoColor=white&labelColor=061321" alt="Canlı Demoyu Aç" height="42"></a>
 <a href="https://cilginyazilim.com/kutuphane/php-rest-api-jwt"><img src="https://img.shields.io/badge/KAYNAK_KODU_%C4%B0NCELE-0ea5e9?style=for-the-badge&logo=readthedocs&logoColor=white&labelColor=061321" alt="Kaynak Kodu İncele" height="42"></a>
-<a href="https://github.com/CilginYazilim/PHP-MySQL-REST-API-JWT-Jeton-Kapsam-Hiz-Siniri/archive/refs/heads/main.zip"><img src="https://img.shields.io/badge/ZIP_%C4%B0ND%C4%B0R-16a34a?style=for-the-badge&logo=github&logoColor=white&labelColor=061321" alt="ZIP İndir" height="42"></a>
+<a href="https://github.com/CilginYazilim/rest-api-jwt/archive/refs/heads/main.zip"><img src="https://img.shields.io/badge/ZIP_%C4%B0ND%C4%B0R-16a34a?style=for-the-badge&logo=github&logoColor=white&labelColor=061321" alt="ZIP İndir" height="42"></a>
 
 <br><br>
 
-<a href="https://cilginyazilim.com/kutuphane/uygulama/PHP-MySQL-REST-API-JWT-Jeton-Kapsam-Hiz-Siniri-main/" title="Canlı demoyu açmak için tıklayın">
+<a href="https://cilginyazilim.com/kutuphane/uygulama/rest-api-jwt/" title="Canlı demoyu açmak için tıklayın">
   <img src="docs/screenshots/01-api-konsolu.png" alt="JWT REST API konsolu canlı demo önizlemesi" width="860">
 </a>
 
@@ -335,8 +335,8 @@ Bir ayrıntı daha: yetkisiz kayıt için **403 değil 404** dönüyoruz. 403, "
 
 ```bash
 # 1) Depoyu alın
-git clone https://github.com/CilginYazilim/PHP-MySQL-REST-API-JWT-Jeton-Kapsam-Hiz-Siniri.git
-cd PHP-MySQL-REST-API-JWT-Jeton-Kapsam-Hiz-Siniri
+git clone https://github.com/CilginYazilim/rest-api-jwt.git
+cd rest-api-jwt
 
 # 2) Veritabanını oluşturun (dosya CREATE DATABASE'i kendisi yapar)
 mysql -u root -p < cy_api_jwt.sql
@@ -346,7 +346,7 @@ cp system/config.local.php.example system/config.local.php
 #    → içindeki DB_* ve JWT_SECRET satırlarını doldurun
 
 # 4) Tarayıcıda açın
-#    http://localhost/PHP-MySQL-REST-API-JWT-Jeton-Kapsam-Hiz-Siniri/
+#    http://localhost/rest-api-jwt/
 ```
 
 **Composer yok, npm yok.** jQuery ve Bootstrap dosyaları depoda; internet bağlantısı olmadan da çalışır.
@@ -354,7 +354,7 @@ cp system/config.local.php.example system/config.local.php
 ### 30 saniyede curl ile deneme
 
 ```bash
-BASE=http://localhost/PHP-MySQL-REST-API-JWT-Jeton-Kapsam-Hiz-Siniri/api
+BASE=http://localhost/rest-api-jwt/api
 
 # Jeton al
 TOKEN=$(curl -s -X POST "$BASE/auth/token" \
@@ -384,6 +384,44 @@ Temiz URL'ler (`/api/notes`) `api/.htaccess` içindeki yönlendirmeye dayanır. 
 ```
 
 Üç biçim de aynı yönlendiriciye düşer; `resolve_path()` üçünü birden dener.
+
+### Ortam değişkenleri
+
+Depo kökündeki **`.env`** dosyasına yazın; `system/config.php` dosyasına
+hiç dokunmayın:
+
+```bash
+cp .env.example .env        # Windows: copy .env.example .env
+```
+
+`.env` `.gitignore` içindedir: depoya gönderilmez ve dağıtım (deploy) onu
+**silmez**. `system/config.php` ise depoda durur ve her dağıtımda depodaki
+sürümle değiştirilir — parolayı oraya yazarsanız hem GitHub'a gider hem de
+ilk deploy'da kaybolur.
+
+Dosyayı hiç oluşturmasanız da uygulama çalışır; aşağıdaki varsayılanlar
+yerel bir XAMPP kurulumuna göredir.
+
+**Değer arama sırası:** `.env` → sunucunun gerçek ortam değişkeni
+(Apache `SetEnv`, systemd…) → buradaki varsayılan.
+
+| Değişken | Varsayılan | Ne işe yarar |
+|---|---|---|
+| `DB_HOST` | `127.0.0.1` | Veritabanı sunucusu |
+| `DB_NAME` | `cy_api_jwt` | Veritabanı adı |
+| `DB_USER` | `root` | Kullanıcı |
+| `DB_PASS` | *(boş)* | Şifre — **koda yazmayın** |
+| `APP_TIMEZONE` | `Europe/Istanbul` | PHP'nin saat dilimi |
+| `APP_DEBUG` | *ortamdan* | Hataların ekrana basılıp basılmayacağı |
+
+**`APP_TIMEZONE` neden var?** XAMPP'ın `php.ini` dosyasındaki
+`date.timezone`, MySQL'in kullandığı sistem diliminden farklı olabilir.
+Test makinesinde PHP `Europe/Berlin`, MySQL `Europe/Istanbul`
+kullanıyordu; aynı anı anlatan iki satır bir saat farklı görünüyordu.
+Zaman **hesapları** SQL tarafında yapıldığı için doğruydu, ama ekrana
+basılan saat kayıyordu. Artık dilim açıkça sabitleniyor — sunucunuz başka
+bir bölgedeyse bu değişkeni tanımlamanız yeterli, koda dokunmayın.
+
 
 ---
 
@@ -907,7 +945,7 @@ Katkılar memnuniyetle karşılanır.
 4. Dalı gönderin: `git push origin ozellik/harika-sey`
 5. Pull request açın
 
-Hata bildirimi ve öneriler için [Issues](https://github.com/CilginYazilim/PHP-MySQL-REST-API-JWT-Jeton-Kapsam-Hiz-Siniri/issues) bölümünü kullanabilirsiniz.
+Hata bildirimi ve öneriler için [Issues](https://github.com/CilginYazilim/rest-api-jwt/issues) bölümünü kullanabilirsiniz.
 
 ---
 
