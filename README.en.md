@@ -342,8 +342,12 @@ cd rest-api-jwt
 mysql -u root -p < cy_api_jwt.sql
 
 # 3) Create local settings (optional; defaults suit XAMPP)
+#    Shortest route — .env:
+cp .env.example .env
+#    → fill in the DB_* lines
+#
+#    Or config.local.php (JWT_SECRET can live here too):
 cp system/config.local.php.example system/config.local.php
-#    → fill in the DB_* and JWT_SECRET lines
 
 # 4) Open it in a browser
 #    http://localhost/rest-api-jwt/
@@ -541,6 +545,7 @@ Other examples built on the same pattern: [cilginyazilim.com/kutuphane](https://
 │   └── images/logo.png
 ├── docs/screenshots/
 ├── .htaccess              → no directory listing, file-type rules, security headers
+├── .env.example           → Database credentials (optional) — in .gitignore
 ├── cy_api_jwt.sql         → schema + 4 keys + 19 notes (timestamps via NOW() - INTERVAL)
 ├── index.php              → API CONSOLE (not part of the API)
 ├── CHANGELOG.md

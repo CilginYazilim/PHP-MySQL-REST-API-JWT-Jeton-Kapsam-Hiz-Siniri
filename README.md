@@ -342,8 +342,12 @@ cd rest-api-jwt
 mysql -u root -p < cy_api_jwt.sql
 
 # 3) Yerel ayarları oluşturun (isteğe bağlı; varsayılanlar XAMPP'a uyar)
+#    En kısa yol — .env:
+cp .env.example .env
+#    → içindeki DB_* satırlarını doldurun
+#
+#    Ya da config.local.php (JWT_SECRET'i de burada tutabilirsiniz):
 cp system/config.local.php.example system/config.local.php
-#    → içindeki DB_* ve JWT_SECRET satırlarını doldurun
 
 # 4) Tarayıcıda açın
 #    http://localhost/rest-api-jwt/
@@ -540,6 +544,7 @@ Aynı kalıpla hazırlanmış diğer örnekler: [cilginyazilim.com/kutuphane](ht
 │   └── images/logo.png
 ├── docs/screenshots/
 ├── .htaccess              → dizin listeleme kapalı, dosya türü kuralları, güvenlik başlıkları
+├── .env.example           → Veritabanı bilgileri (isteğe bağlı) — .gitignore içinde
 ├── cy_api_jwt.sql         → şema + 4 anahtar + 19 not (zamanlar NOW() - INTERVAL ile)
 ├── index.php              → API KONSOLU (API'nin parçası değildir)
 ├── CHANGELOG.md
